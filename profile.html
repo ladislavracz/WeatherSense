@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSense - Profil</title>
+    <style>
+           :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --danger: #ea4335;
+            --light-bg: #f8f9fa;
+            --dark-text: #202124;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .weather-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .current-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .temp {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .forecast-day {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        footer {
+            background-color: var(--dark-text);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .forecast-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .profile-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #666;
+            margin-right: 1.5rem;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .tab-container {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .favorites-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .favorite-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">WeatherSense</div>
+            <div class="nav-links">
+                <a href="index.html">Kezdőlap</a>
+                <a href="weather.html">Időjárás</a>
+                <a href="alerts.html">Riasztások</a>
+                <a href="profile.html">Profil</a>
+                <a href="sugo.html">Súgó ⓘ</a>
+                <a href="login.html">Bejelentkezés</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-pic">JD</div>
+                <div class="profile-info">
+                    <h1>John Doe</h1>
+                    <p>Prémium felhasználó • Regisztrálva: 2023.05.12.</p>
+                </div>
+            </div>
+            
+            <div class="tab-container">
+                <div class="tab active">Személyes adatok</div>
+                <div class="tab">Kedvencek</div>
+                <div class="tab">Előfizetés</div>
+                <div class="tab">Adatvédelem</div>
+            </div>
+            
+            <form>
+                <div class="form-group">
+                    <label>Teljes név</label>
+                    <input type="text" value="John Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email cím</label>
+                    <input type="email" value="john.doe@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Telefonszám</label>
+                    <input type="tel" value="+36 70 123 4567">
+                </div>
+                
+                <div class="form-group">
+                    <label>Alapértelmezett hely</label>
+                    <input type="text" value="Budapest">
+                </div>
+                
+                <div class="form-group">
+                    <label>Mértékegységek</label>
+                    <select>
+                        <option>°C, km/h (metrikus)</option>
+                        <option>°F, mph (imperial)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Téma</label>
+                    <select>
+                        <option>Világos</option>
+                        <option>Sötét</option>
+                        <option>Rendszer alapján</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Mentés</button>
+            </form>
+        </div>
+        
+        <div class="profile-container">
+            <h2>Jelszó módosítása</h2>
+            <form style="margin-top: 1.5rem;">
+                <div class="form-group">
+                    <label>Jelenlegi jelszó</label>
+                    <input type="password">
+                </div>
+                
+                <div class="form-group">
+                    <label>Új jelszó</label>
+                    <input type="password">
+                </div>
+                
+                <div class="form-group">
+                    <label>Új jelszó megerősítése</label>
+                    <input type="password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Jelszó frissítése</button>
+            </form>
+        </div>
+        
+        <div class="profile-container">
+            <h2>Fiók kezelése</h2>
+            <div style="margin-top: 1.5rem;">
+                <button class="btn btn-danger">Fiók törlése</button>
+                <p style="margin-top: 0.5rem; color: #666;">Figyelem! A fióktörlés végleges és nem vonható vissza.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 WeatherSense - Minden jog fenntartva</p>
+        <p style="margin-top: 1rem;">
+            <a href="#" style="color: white; margin: 0 0.5rem;">Adatvédelmi irányelvek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Felhasználási feltételek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Kapcsolat</a>
+        </p>
+    </footer>
+</body>
+</html>

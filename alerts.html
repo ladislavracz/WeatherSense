@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSense - Riasztások</title>
+    <style>
+          :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --danger: #ea4335;
+            --light-bg: #f8f9fa;
+            --dark-text: #202124;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .weather-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .current-weather {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .temp {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .forecast-day {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        footer {
+            background-color: var(--dark-text);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .forecast-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .alert-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+        
+        .alert-info {
+            flex: 1;
+        }
+        
+        .alert-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">WeatherSense</div>
+            <div class="nav-links">
+                <a href="index.html">Kezdőlap</a>
+                <a href="weather.html">Időjárás</a>
+                <a href="alerts.html">Riasztások</a>
+                <a href="profile.html">Profil</a>
+                <a href="sugo.html">Súgó ⓘ</a>
+                <a href="login.html">Bejelentkezés</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h1>Riasztások</h1>
+            <button class="btn btn-primary">Új riasztás</button>
+        </div>
+        
+        <div class="alert-container">
+            <div class="alert-item">
+                <div class="alert-info">
+                    <h3>Magas hőmérséklet</h3>
+                    <p>Értesít, ha a hőmérséklet meghaladja a 30°C-t Budapesten</p>
+                    <p style="color: #666; margin-top: 0.5rem;">Email • Push értesítés</p>
+                </div>
+                <div class="alert-actions">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <button class="btn btn-danger">Törlés</button>
+                </div>
+            </div>
+            
+            <div class="alert-item">
+                <div class="alert-info">
+                    <h3>Eső figyelmeztetés</h3>
+                    <p>Értesít, ha eső várható a következő órában</p>
+                    <p style="color: #666; margin-top: 0.5rem;">Push értesítés</p>
+                </div>
+                <div class="alert-actions">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <button class="btn btn-danger">Törlés</button>
+                </div>
+            </div>
+            
+            <div class="alert-item">
+                <div class="alert-info">
+                    <h3>Magas pollenszint</h3>
+                    <p>Értesít, ha a fű pollenszintje magasra emelkedik</p>
+                    <p style="color: #666; margin-top: 0.5rem;">Email értesítés</p>
+                </div>
+                <div class="alert-actions">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <button class="btn btn-danger">Törlés</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert-container">
+            <h2>Új riasztás létrehozása</h2>
+            <form style="margin-top: 1.5rem;">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Riasztás típusa</label>
+                    <select style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                        <option>Hőmérséklet</option>
+                        <option>Csapadék</option>
+                        <option>Szél</option>
+                        <option>Légszennyezettség</option>
+                        <option>Pollen</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Feltétel</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <select style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <option>Nagyobb mint</option>
+                            <option>Kisebb mint</option>
+                            <option>Egyenlő</option>
+                        </select>
+                        <input type="text" style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;" placeholder="Érték">
+                        <select style="flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;">
+                            <option>°C</option>
+                            <option>%</option>
+                            <option>km/h</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Helyszín</label>
+                    <input type="text" style="width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px;" placeholder="Város vagy cím">
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Értesítési módok</label>
+                    <div style="display: flex; gap: 1.5rem;">
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" checked>
+                            Alkalmazáson belül
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox">
+                            Email
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox">
+                            SMS (prémium)
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Riasztás mentése</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 WeatherSense - Minden jog fenntartva</p>
+        <p style="margin-top: 1rem;">
+            <a href="#" style="color: white; margin: 0 0.5rem;">Adatvédelmi irányelvek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Felhasználási feltételek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Kapcsolat</a>
+        </p>
+    </footer>
+</body>
+</html>

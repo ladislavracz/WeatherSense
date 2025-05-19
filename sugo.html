@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherSense - Súgó</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --danger: #ea4335;
+            --light-bg: #f8f9fa;
+            --dark-text: #202124;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .help-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .help-sidebar {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .help-content {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+        
+        .sidebar-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            color: var(--dark-text);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: #e8f0fe;
+            color: var(--primary);
+        }
+        
+        h1 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        h2 {
+            margin: 2rem 0 1rem;
+            color: var(--secondary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h3 {
+            margin: 1.5rem 0 0.5rem;
+            color: var(--dark-text);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1.5rem;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding-top: 0.5rem;
+            display: none;
+        }
+        
+        .faq-answer.show {
+            display: block;
+        }
+        
+        .contact-card {
+            background: #f8f9fa;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-method i {
+            margin-right: 1rem;
+            color: var(--primary);
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+        
+        footer {
+            background-color: var(--dark-text);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .help-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .help-sidebar {
+                position: static;
+                margin-bottom: 2rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">WeatherSense</a>
+            <div class="nav-links">
+                <a href="index.html">Kezdőlap</a>
+                <a href="weather.html">Időjárás</a>
+                <a href="alerts.html">Riasztások</a>
+                <a href="profile.html">Profil</a>
+                <a href="sugo.html" class="active">Súgó ⓘ</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="help-container">
+            <div class="help-sidebar">
+                <h3 class="sidebar-title">Súgó menü</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#getting-started" class="active">Bevezetés</a></li>
+                    <li><a href="#weather-features">Időjárási funkciók</a></li>
+                    <li><a href="#alerts-system">Riasztási rendszer</a></li>
+                    <li><a href="#profile-settings">Profilbeállítások</a></li>
+                    <li><a href="#troubleshooting">Hibaelhárítás</a></li>
+                    <li><a href="#faq">GYIK</a></li>
+                    <li><a href="#contact">Kapcsolat</a></li>
+                </ul>
+            </div>
+            
+            <div class="help-content">
+                <h1>WeatherSense Súgóközpont</h1>
+                
+                <section id="getting-started">
+                    <h2>Bevezetés</h2>
+                    <p>Üdvözöljük a WeatherSense súgóközpontjában! Ez az oldal minden szükséges információt tartalmaz az alkalmazás használatához.</p>
+                    
+                    <h3>Alapvető információk</h3>
+                    <p>A WeatherSense egy innovatív időjárás-előrejelző alkalmazás, amely pontos, valós idejű adatokat nyújt intuitív felületen. Az alkalmazás főbb jellemzői:</p>
+                    <ul>
+                        <li>Valós idejű időjárási adatok világszerte</li>
+                        <li>Részletes 5 napos előrejelzés</li>
+                        <li>Testreszabható riasztások extrém időjárási eseményekről</li>
+                        <li>Többnyelvű támogatás</li>
+                        <li>Reszponzív design minden eszközön</li>
+                    </ul>
+                </section>
+                
+                <section id="weather-features">
+                    <h2>Időjárási funkciók</h2>
+                    
+                    <h3>Alapvető használat</h3>
+                    <p>A kezdőlapon látható az aktuális időjárás az Ön helyzete alapján (ha engedélyezte a helymeghatározást). Az alábbi információkat tartalmazza:</p>
+                    <ul>
+                        <li>Aktuális hőmérséklet</li>
+                        <li>Érzésre hőmérséklet</li>
+                        <li>Időjárási állapot (pl. napos, esős)</li>
+                        <li>Szélsebesség és irány</li>
+                        <li>Páratartalom</li>
+                    </ul>
+                    
+                    <h3>Előrejelzés megtekintése</h3>
+                    <p>A "5 napos előrejelzés" szakaszban láthatja a következő napok időjárási viszonyait. Az egyes napokra kattintva részletesebb információkat kap:</p>
+                    <ul>
+                        <li>Napi maximum és minimum hőmérséklet</li>
+                        <li>Csapadék valószínűsége</li>
+                        <li>Napkelte és napnyugta időpontja</li>
+                        <li>UV-index</li>
+                    </ul>
+                    
+                    <h3>Keresés funkció</h3>
+                    <p>Bármely város időjárási adatait megtalálhatja a keresőmező segítségével. A keresés intelligens, elnéző a helyesírási hibákkal szemben, és alternatív helyneveket is felismer.</p>
+                </section>
+                
+                <section id="alerts-system">
+                    <h2>Riasztási rendszer</h2>
+                    
+                    <h3>Riasztások beállítása</h3>
+                    <p>Az "Riasztások" menüpontban beállíthat értesítéseket különböző időjárási eseményekről:</p>
+                    <ol>
+                        <li>Nyissa meg a "Riasztások" oldalt</li>
+                        <li>Kattintson az "Új riasztás" gombra</li>
+                        <li>Válassza ki a riasztás típusát (pl. hőmérséklet, csapadék)</li>
+                        <li>Állítsa be a feltételeket (pl. "nagyobb mint 30°C")</li>
+                        <li>Válassza ki az értesítési módot (alkalmazás, e-mail, SMS)</li>
+                        <li>Mentse a riasztást</li>
+                    </ol>
+                    
+                    <h3>Riasztási típusok</h3>
+                    <p>A következő riasztási típusok állíthatóak be:</p>
+                    <ul>
+                        <li><strong>Hőmérséklet:</strong> magas/alacsony hőmérséklet figyelmeztetés</li>
+                        <li><strong>Csapadék:</strong> eső, hó vagy jég esedékességének előrejelzése</li>
+                        <li><strong>Szél:</strong> erős szél- vagy szélroham figyelmeztetés</li>
+                        <li><strong>Vihar:</strong> vihar, zivatar vagy mennydörgés esedékessége</li>
+                        <li><strong>Pollen:</strong> magas pollenszint figyelmeztetés allergiásoknak</li>
+                    </ul>
+                </section>
+                
+                <section id="profile-settings">
+                    <h2>Profilbeállítások</h2>
+                    
+                    <h3>Személyes adatok</h3>
+                    <p>A profil oldalon módosíthatja személyes adatait, például:</p>
+                    <ul>
+                        <li>Teljes név</li>
+                        <li>E-mail cím</li>
+                        <li>Profilkép</li>
+                        <li>Telefonszám (SMS riasztásokhoz)</li>
+                    </ul>
+                    
+                    <h3>Beállítások</h3>
+                    <p>Testreszabhatja az alkalmazás működését a következő beállításokkal:</p>
+                    <ul>
+                        <li><strong>Alapértelmezett hely:</strong> Az alkalmazás induláskor megjelenítendő helyszín</li>
+                        <li><strong>Mértékegységek:</strong> °C vagy °F, km/h vagy mph</li>
+                        <li><strong>Téma:</strong> Világos vagy sötét megjelenés</li>
+                        <li><strong>Értesítések:</strong> Általános értesítési beállítások</li>
+                    </ul>
+                    
+                    <h3>Jelszó módosítás</h3>
+                    <p>A jelszavát a "Jelszó módosítása" szakaszban változtathatja meg. Erre minden 90 napban felkérjük Önt biztonsági okokból.</p>
+                </section>
+                
+                <section id="troubleshooting">
+                    <h2>Hibaelhárítás</h2>
+                    
+                    <h3>Gyakori problémák és megoldások</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Az alkalmazás nem frissíti az időjárási adatokat</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Próbálja meg a következő lépéseket:</p>
+                            <ol>
+                                <li>Ellenőrizze internetkapcsolatát</li>
+                                <li>Húzza le a képernyőt frissítéshez (pull-to-refresh)</li>
+                                <li>Zárja be és indítsa újra az alkalmazást</li>
+                                <li>Ha a probléma továbbra is fennáll, jelentkezzen ki és újra be</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Nem kapok értesítéseket a beállított riasztásokról</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Lehetséges okok és megoldások:</p>
+                            <ul>
+                                <li>Ellenőrizze, hogy engedélyezte-e az értesítéseket a böngésző beállításaiban</li>
+                                <li>Nézze meg a "Profil" menüpontban az értesítési beállításokat</li>
+                                <li>Győződjön meg róla, hogy a riasztás feltételei teljesültek-e</li>
+                                <li>Ellenőrizze a spam mappát e-mail értesítések esetén</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>A helymeghatározás nem működik</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Próbálja meg a következőket:</p>
+                            <ol>
+                                <li>Győződjön meg róla, hogy engedélyezte a helymeghatározást a böngésző beállításaiban</li>
+                                <li>Ellenőrizze, hogy az eszközön engedélyezve van-e a GPS</li>
+                                <li>Próbálja meg frissíteni az oldalt</li>
+                                <li>Ha továbbra is problémája van, manuálisan is megadhatja a helyszínt a keresőmezőben</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="faq">
+                    <h2>Gyakran Ismételt Kérdések (GYIK)</h2>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Honnan származnak az időjárási adatok?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Az alkalmazás több hiteles külső szolgáltatót (pl. OpenWeatherMap, AccuWeather) használ az adatok gyűjtéséhez. Az adatokat folyamatosan ellenőrizzük és összevetjük a különböző forrásokból, hogy a legpontosabb előrejelzést nyújthassuk.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Milyen gyakran frissülnek az adatok?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>A valós idejű adatok 15 percenként frissülnek automatikusan. Az előrejelzési adatok naponta kétszer, reggel és este frissülnek. Manuálisan is frissítheti az adatokat a képernyő lehúzásával (pull-to-refresh).</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Működik az alkalmazás internetkapcsolat nélkül?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Igen, korlátozott funkcionalitással. Az alkalmazás képes megjeleníteni a legutóbb letöltött adatokat az alapvető időjárási információkról. Azonban új adatok letöltéséhez és a riasztások működéséhez internetkapcsolat szükséges.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleAnswer(this)">
+                            <span>Hogyan törölhetek egy mentett helyszínt?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>A mentett helyszíneket a "Profil" menüpontban kezelheti. A kedvencek listájánál a helyszín neve mellett talál egy "Törlés" gombot. A törlés megerősítés után azonnal érvénybe lép.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="contact">
+                    <h2>Kapcsolat</h2>
+                    <p>Ha további segítségre van szüksége, vagy észrevétele van az alkalmazással kapcsolatban, keressen minket bizalommal.</p>
+                    
+                    <div class="contact-card">
+                        <div class="contact-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>E-mail</strong><br>
+                                support@weathersense.com
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Telefon</strong><br>
+                                +36 1 234 5678 (Hétfő-Péntek 9:00-17:00)
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <i class="fas fa-comment"></i>
+                            <div>
+                                <strong>Online chat</strong><br>
+                                Az alkalmazáson belül a "Segítség" menüpontban
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Visszajelzés küldése</h3>
+                    <p>Értékeljük, ha visszajelzést küld az alkalmazásról. Segítségével folyamatosan fejleszthetjük a WeatherSense-t.</p>
+                    <p>Visszajelzését küldheti a support@weathersense.com e-mail címre, vagy értékelje az alkalmazást az App Store-ban/Google Play-en.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 WeatherSense - Minden jog fenntartva</p>
+        <p style="margin-top: 1rem;">
+            <a href="#" style="color: white; margin: 0 0.5rem;">Adatvédelmi irányelvek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Felhasználási feltételek</a>
+            <a href="#" style="color: white; margin: 0 0.5rem;">Kapcsolat</a>
+        </p>
+    </footer>
+
+    <script>
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            const icon = element.querySelector('i');
+            
+            answer.classList.toggle('show');
+            
+            if (answer.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+                // Update active state in sidebar
+                document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Highlight current section in sidebar while scrolling
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const scrollPosition = window.scrollY;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === '#' + sectionId) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
