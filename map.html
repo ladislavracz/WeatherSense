@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Város Kereső Térkép</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        #cityInput {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .info-window {
+            padding: 10px;
+        }
+        .info-window h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .info-window p {
+            margin-bottom: 5px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .search-container {
+                flex-direction: column;
+            }
+            #map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Város Kereső Térkép</h1>
+        
+        <div class="search-container">
+            <input type="text" id="cityInput" placeholder="Írja be a város nevét (pl. Sárospatak, Budapest, Párizs...)">
+            <button onclick="searchCity()">Keresés</button>
+        </div>
+        
+        <div id="loading" class="loading">
+            <p>Keresés folyamatban...</p>
+        </div>
+        
+        <div id="map"></div>
+    </div>
+
+    <script>
+        // Térkép és változók inicializálása
+        let map;
+        let marker;
+        let infoWindow;
+        const defaultLocation = { lat: 47.4979, lng: 19.0402 }; // Budapest
+        
+        // Térkép betöltése
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 12,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true
+            });
+            
+            // Alapértelmezett jelölő
+            marker = new google.maps.Marker({
+                position: defaultLocation,
+                map: map,
+                title: "Budapest"
+            });
+            
+            // Információs ablak
+            infoWindow = new google.maps.InfoWindow({
+                content: "<div class='info-window'><h3>Budapest</h3><p>Magyarország fővárosa</p></div>"
+            });
+            
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Enter billentyű figyelése
+            document.getElementById("cityInput").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    searchCity();
+                }
+            });
+        }
+        
+        // Város keresése
+        function searchCity() {
+            const city = document.getElementById("cityInput").value.trim();
+            if (!city) {
+                alert("Kérem adjon meg egy városnevet!");
+                return;
+            }
+            
+            document.getElementById("loading").style.display = "block";
+            
+            // Geocoding API hívás
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: city }, (results, status) => {
+                document.getElementById("loading").style.display = "none";
+                
+                if (status === "OK") {
+                    const location = results[0].geometry.location;
+                    const formattedAddress = results[0].formatted_address;
+                    
+                    // Térkép középre állítása
+                    map.setCenter(location);
+                    map.setZoom(12);
+                    
+                    // Régi jelölő eltávolítása
+                    if (marker) {
+                        marker.setMap(null);
+                    }
+                    
+                    // Új jelölő létrehozása
+                    marker = new google.maps.Marker({
+                        position: location,
+                        map: map,
+                        title: city
+                    });
+                    
+                    // Információs ablak tartalma
+                    infoWindow.setContent(`
+                        <div class="info-window">
+                            <h3>${city}</h3>
+                            <p>${formattedAddress}</p>
+                            <p>Szélesség: ${location.lat().toFixed(4)}</p>
+                            <p>Hosszúság: ${location.lng().toFixed(4)}</p>
+                        </div>
+                    `);
+                    
+                    infoWindow.open(map, marker);
+                    
+                    // Jelölő kattintás esemény
+                    marker.addListener("click", () => {
+                        infoWindow.open(map, marker);
+                    });
+                } else {
+                    alert("A város nem található. Kérem próbáljon meg egy másik nevet!");
+                    console.error("Geocode error:", status);
+                }
+            });
+        }
+    </script>
+    
+    <!-- Google Maps API betöltése -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</body>
+</html>
